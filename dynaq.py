@@ -7,7 +7,7 @@ class DynaQ:
     def __init__(self, n, alpha, gamma, epsilon, max_steps):
         self.env = Maze()
 
-        self.q = np.zoros((*self.env.observation_space, self.env.n_actions))
+        self.q = np.zeros((*self.env.observation_space, self.env.n_actions))
         self.model = {}
 
         self.memory = []
