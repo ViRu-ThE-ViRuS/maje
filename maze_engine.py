@@ -42,6 +42,7 @@ class Maze:
     def generate_maze(self):
         self.blocks = [[1, 2], [2, 2], [3, 2], [0, 7], [1, 7], [2, 7], [4, 5]]
         self.goal = [self.width - 1, self.height - 1]
+        self.max_distance = np.linalg.norm(np.array([0, 0]) - np.array(self.goal))
 
         maze = np.zeros((self.width, self.height))
 
@@ -77,16 +78,16 @@ class Maze:
         reward = 0
         if not(self.state[0] >= 0 and self.state[0] < self.width) or \
                 not(self.state[1] >= 0 and self.state[1] < self.height):
-            reward = -1
+            reward = -50
             self.done = True
         else:
             self.maze_data[self.state[0], self.state[1]] = 1
 
             self.done = self.state == self.goal or self.state in self.blocks
             if self.state in self.blocks:
-                reward = -1
+                reward = -50
             elif self.state == self.goal:
-                reward = 1
+                reward = 100
 
         self.render()
         return tuple(self.state), reward, self.done
@@ -101,6 +102,10 @@ class Maze:
 
     def trapped(self):
         return not any([not self.useless_move(move) for move in range(self.n_actions)])
+
+    def distance_heuristic(self):
+        # return self.max_distance / np.linalg.norm(np.array(self.state) - np.array(self.goal))
+        return -(np.linalg.norm(np.array(self.state) - np.array(self.goal)) / self.max_distance)
 
     def deinit(self):
         pygame.quit()
