@@ -2,6 +2,7 @@ import pygame
 import random
 import numpy as np
 
+pygame.init()
 white = pygame.Color(255, 255, 255)
 black = pygame.Color(0, 0, 0)
 red = pygame.Color(255, 0, 0)
@@ -22,7 +23,7 @@ pygame.display.set_caption('maje')
 
 class Maze:
     n_actions = 4
-    observation_space = (2, )
+    observation_space = (window_width//block_size, window_height//block_size)
 
     def __init__(self):
         self.width = window_width // block_size
@@ -36,7 +37,7 @@ class Maze:
         self.maze_data = self.generate_maze()
         self.render()
 
-        return self.state
+        return tuple(self.state)
 
     def generate_maze(self):
         self.blocks = [[1, 2], [2, 2], [3, 2], [0, 7], [1, 7], [2, 7], [4, 5]]
@@ -70,25 +71,36 @@ class Maze:
 
     def step(self, move):
         assert not self.done
-        direction = directions[np.argmax(move)]
-        new_state = self.state[:]
+        direction = directions[move]
+        self.state = [self.state[0] + direction[0], self.state[1] + direction[1]]
 
-        new_state[0] += direction[0]
-        new_state[1] += direction[1]
-
-        if new_state[0] >= 0 and new_state[0] < self.width and \
-                new_state[1] >= 0 and new_state[1] < self.height:
-            self.state = new_state
+        reward = 0
+        if not(self.state[0] >= 0 and self.state[0] < self.width) or \
+                not(self.state[1] >= 0 and self.state[1] < self.height):
+            reward = -1
+            self.done = True
+        else:
             self.maze_data[self.state[0], self.state[1]] = 1
 
-        self.done = self.state == self.goal or self.state in self.blocks
-        reward = 1 if self.state == self.goal else 0
+            self.done = self.state == self.goal or self.state in self.blocks
+            if self.state in self.blocks:
+                reward = -1
+            elif self.state == self.goal:
+                reward = 1
+
         self.render()
+        return tuple(self.state), reward, self.done
 
-        return self.state, reward, self.done
+    def useless_move(self, move):
+        direction = directions[move]
+        new_state = [self.state[0] + direction[0], self.state[1] + direction[1]]
+        try:
+            return self.maze_data[new_state[0], new_state[1]] == 1
+        except IndexError:
+            return False
 
+    def trapped(self):
+        return not any([not self.useless_move(move) for move in range(self.n_actions)])
 
-pygame.init()
-m = Maze()
-m.step([0, 1, 0, 0])
-pygame.quit()
+    def deinit(self):
+        pygame.quit()
