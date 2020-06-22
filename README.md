@@ -20,4 +20,8 @@ maze
 - next steps is to move on to dynaq+ with time weighted exploration incentives
   with heuristics for faster convergence
 
+<br>
+<img src="res/gen2.gif" height="250" width="250" />
+<br>
+
 
