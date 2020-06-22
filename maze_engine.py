@@ -7,8 +7,8 @@ white = pygame.Color(255, 255, 255)
 black = pygame.Color(0, 0, 0)
 red = pygame.Color(255, 0, 0)
 green = pygame.Color(0, 255, 0)
-window_height = 150
-window_width = 150
+window_height = 100
+window_width = 100
 
 up = (0, -1)
 down = (0, 1)

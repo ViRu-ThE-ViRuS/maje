@@ -9,7 +9,6 @@ class DynaQHeuristic:
 
         self.q = np.zeros((*self.env.observation_space, self.env.n_actions))
         self.model = {}
-
         self.memory = []
 
         self.n = n
@@ -36,7 +35,8 @@ class DynaQHeuristic:
             if self.env.useless_move(move):
                 continue
 
-            self.memory.append([state, move])
+            if [state, move] not in self.memory:
+                self.memory.append([state, move])
 
             new_state, reward, done = self.env.step(move)
 
@@ -70,13 +70,15 @@ class DynaQHeuristic:
             rewards.append(reward)
             steps.append(step)
 
+            if episode % 100 == 0:
+                print(f'mem_size: {len(self.memory)}')
             print(f'{episode:4d} : {reward:5.4f} : {step:3d} : {self.epsilon:.5f}')
 
-            self.epsilon = 0.05 if self.epsilon <= 0.05 else self.epsilon * 0.95
+            self.epsilon = 0.01 if self.epsilon <= 0.01 else self.epsilon * 0.95
 
         return rewards, steps
 
 
-model = DynaQHeuristic(1000, 0.75, 0.9, 1.0, 1000)
+model = DynaQHeuristic(100, 0.75, 0.9, 1.0, 1000)
 reward, steps = model.learn(10000)
 model.env.deinit()
