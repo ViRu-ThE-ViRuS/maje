@@ -1,6 +1,7 @@
 # maje
 Learning to solve mazes using reinforcement learning algorithms like DynaQ,
-DynaQ+, DQN and testing their performance compared to traditional algorithms.
+DynaQ+, Priority Sweeping, Heuristic Reward Learning, DQN and testing their,
+performance compared to traditional algorithms.
 Goal is also to visualize the algorithms thinking and learning process.
 
 ### gen1 dynaQ naive
@@ -47,3 +48,4 @@ in this static maze problem setting. In some runs, it even reduces convergence
 speed because the agent starts exploring behaviour when it doesnt need to and
 already has a fact base
 
+- next step is to add priority sweeping
