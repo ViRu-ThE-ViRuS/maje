@@ -1,7 +1,7 @@
 # maje
 Learning to solve mazes using reinforcement learning algorithms like DynaQ,
-DynaQ+, DQN and testing their performance compared to traditional algorithms
-like A*, BFS etc. Goal is also to visualize the algorithms thinking.
+DynaQ+, DQN and testing their performance compared to traditional algorithms.
+Goal is also to visualize the algorithms thinking and learning process.
 
 ### gen1 dynaQ naive
 added dynaQ agent, which shows quick learning from experience, but still takes
@@ -39,3 +39,11 @@ major advantage of dynaq planning+learning algorithms over naive q learning
 <br>
 <img src="res/gen3.gif" height="250" width="250" />
 <br>
+
+### gen4 dynaQ+
+adding a last-visit-time-delta based heuristic to the rewards in the planning
+phase to enhance explorative behaviour, dynaQ+, doesn't really help performance
+in this static maze problem setting. In some runs, it even reduces convergence
+speed because the agent starts exploring behaviour when it doesnt need to and
+already has a fact base
+
