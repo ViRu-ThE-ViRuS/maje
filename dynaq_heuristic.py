@@ -7,7 +7,7 @@ class DynaQHeuristic:
     def __init__(self, n, alpha, gamma, epsilon, max_steps):
         self.env = Maze()
 
-        self.q = np.zeros((*self.env.observation_space, self.env.n_actions))
+        self.q = np.random.random((*self.env.observation_space, self.env.n_actions))
         self.model = {}
         self.memory = []
 
@@ -23,17 +23,17 @@ class DynaQHeuristic:
         total_reward = 0
         n_steps = 0
 
-        while not done:
+        while not done and n_steps < self.max_steps:
             if np.random.random() < self.epsilon:
                 move = np.random.choice(4)
             else:
                 move = np.argmax(self.q[state])
 
-            if self.env.trapped():
-                break
+            # if self.env.trapped():
+                # break
 
-            if self.env.useless_move(move):
-                continue
+            # if self.env.useless_move(move):
+                # continue
 
             if [state, move] not in self.memory:
                 self.memory.append([state, move])
@@ -41,9 +41,9 @@ class DynaQHeuristic:
             new_state, reward, done = self.env.step(move)
 
             heuristic = self.env.distance_heuristic()
-            reward += heuristic
+            reward = heuristic if reward not in [-50, 1] else reward
 
-            target_delta = 0 if done else self.gamma * np.argmax(self.q[new_state])
+            target_delta = 0 if done else self.gamma * np.max(self.q[new_state])
             self.q[(*state, move)] += self.alpha * (reward + target_delta - self.q[(*state, move)])
             self.model[(*state, move)] = [reward, new_state, done]
 
@@ -58,7 +58,7 @@ class DynaQHeuristic:
                 _new_state = self.model[(*_state, _move)][1]
                 _done = self.model[(*_state, _move)][2]
 
-                _target_delta = 0 if _done else self.gamma * np.argmax(self.q[_new_state])
+                _target_delta = 0 if _done else self.gamma * np.max(self.q[_new_state])
                 self.q[(*_state, _move)] += self.alpha * (_reward + _target_delta - self.q[(*_state, _move)])
 
         return total_reward, n_steps
@@ -79,6 +79,6 @@ class DynaQHeuristic:
         return rewards, steps
 
 
-model = DynaQHeuristic(100, 0.75, 0.9, 1.0, 1000)
-reward, steps = model.learn(10000)
+model = DynaQHeuristic(50, 0.5, 0.9, 1, 500)
+reward, steps = model.learn(200)
 model.env.deinit()

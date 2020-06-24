@@ -9,7 +9,7 @@ added dynaQ agent, which shows quick learning from experience, but still takes
 nature of the maze, and the reward being very far off
 
 - a possible solution is to optimise exploration even more for the problem
-- dynaQ+ algorithm solves this problem efficiently, that will be gen3
+- dynaQ+ algorithm solves this problem efficiently, that will be gen4
 
 ### gen2 dynaQ + heuristic reward
 added a heuristic reward, less negative the closer you get to the goal... this
@@ -24,4 +24,18 @@ maze
 <img src="res/gen2.gif" height="250" width="250" />
 <br>
 
+### gen3 dynaQ naive and dynaQ + heuristic
+fixed a lot of edge case bugs, and improved reward hypothesis, resulting
+algorithms almost always converge withing 50 episodes and find optimal path(s)
+soon after... dynaq heuristic finds more of the shortest paths withing the same
+time frame
+<br>
+both models show high learning speed, and almost never repeat a blunder class
+mistake they once made (hitting a wall or exiting the game scope), this is a
+major advantage of dynaq planning+learning algorithms over naive q learning
 
+- next step is to compare these 2 against dynaq+
+
+<br>
+<img src="res/gen3.gif" height="250" width="250" />
+<br>

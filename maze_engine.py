@@ -1,6 +1,7 @@
 import pygame
 import random
 import numpy as np
+import time
 
 pygame.init()
 white = pygame.Color(255, 255, 255)
@@ -69,25 +70,26 @@ class Maze:
                                      block_size, block_size])
 
         pygame.display.update()
+        time.sleep(0.05)
 
     def step(self, move):
         assert not self.done
         direction = directions[move]
         self.state = [self.state[0] + direction[0], self.state[1] + direction[1]]
 
-        reward = 0
+        reward = -0.1
         if not(self.state[0] >= 0 and self.state[0] < self.width) or \
                 not(self.state[1] >= 0 and self.state[1] < self.height):
             reward = -50
             self.done = True
         else:
             self.maze_data[self.state[0], self.state[1]] = 1
-
             self.done = self.state == self.goal or self.state in self.blocks
+
             if self.state in self.blocks:
                 reward = -50
             elif self.state == self.goal:
-                reward = 100
+                reward = 1
 
         self.render()
         return tuple(self.state), reward, self.done
