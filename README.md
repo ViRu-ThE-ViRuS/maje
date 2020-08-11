@@ -1,6 +1,6 @@
 # maje
 Learning to solve mazes using reinforcement learning algorithms like DynaQ,
-DynaQ+, Priority Sweeping, Heuristic Reward Learning, DQN and testing their,
+DynaQ+, Priority Sweeping, Heuristic Reward Learning, DQN and testing their
 performance compared to traditional algorithms.
 Goal is also to visualize the algorithms thinking and learning process.
 
