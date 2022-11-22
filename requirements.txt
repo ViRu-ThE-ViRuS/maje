@@ -2,7 +2,7 @@ future==0.18.2
 greenlet==0.4.16
 msgpack==1.0.0
 numpy==1.18.5
-Pillow==7.1.2
+Pillow==9.3.0
 pygame==2.0.0.dev6
 pynvim==0.4.1
 torch==1.5.1
