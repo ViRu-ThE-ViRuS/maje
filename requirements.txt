@@ -5,5 +5,5 @@ numpy==1.18.5
 Pillow==7.1.2
 pygame==2.0.0.dev6
 pynvim==0.4.1
-torch==1.5.1
+torch==1.13.1
 torchvision==0.6.1
